@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-MRUCache module
+LRUCache module
 """
 
 from base_caching import BaseCaching
 
 
-class MRUCache(BaseCaching):
-    """ MRUCache class """
+class LRUCache(BaseCaching):
+    """ LRUCache class """
 
     def __init__(self):
         """ Initialize the cache """
@@ -20,10 +20,10 @@ class MRUCache(BaseCaching):
             if (len(self.cache_data) >= BaseCaching.MAX_ITEMS
                     and key not in self.cache_data):
                 if self.order:
-                    mru_key = self.order[-1]
-                    del self.cache_data[mru_key]
+                    lru_key = self.order[-1]
+                    del self.cache_data[lru_key]
                     self.order.pop()
-                    print("DISCARD: {}".format(mru_key))
+                    print("DISCARD: {}".format(lru_key))
             self.cache_data[key] = item
             if key in self.order:
                 self.order.remove(key)
