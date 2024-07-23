@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""
-LRUCache module
-"""
+""" 3-lru_cache module """
 
 from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """ LRUCache class """
+    """ LRUCache class that inherits from BaseCaching """
 
     def __init__(self):
         """ Initialize the cache """
@@ -16,29 +14,34 @@ class LRUCache(BaseCaching):
 
     def put(self, key, item):
         """ Add an item to the cache """
-        if key is not None and item is not None:
-            if (len(self.cache_data) >= BaseCaching.MAX_ITEMS
-                    and key not in self.cache_data):
-                if self.order:
-                    lru_key = self.order[-1]
-                    del self.cache_data[lru_key]
-                    self.order.pop()
-                    print("DISCARD: {}".format(lru_key))
-            self.cache_data[key] = item
-            if key in self.order:
-                self.order.remove(key)
-            self.order.append(key)
+        if key is None or item is None:
+            return
+
+        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+            # If the cache is full, remove the least recently used item
+            lru_key = self.order.pop(0)
+            del self.cache_data[lru_key]
+            print(f"DISCARD: {lru_key}")
+
+        # Add the new item to the cache and update the order
+        self.cache_data[key] = item
+
+        if key in self.order:
+            self.order.remove(key)
+        self.order.append(key)
 
     def get(self, key):
-        """ Get an item by key """
-        if key is not None and key in self.cache_data:
-            self.order.remove(key)
-            self.order.append(key)
-            return self.cache_data[key]
-        return None
+        """ Retrieve an item from the cache """
+        if key is None or key not in self.cache_data:
+            return None
+
+        # Update the order to reflect that the key was recently used
+        self.order.remove(key)
+        self.order.append(key)
+        return self.cache_data[key]
 
     def print_cache(self):
-        """ Print the cache content """
+        """ Print the current cache """
         print("Current cache:")
         for key in self.cache_data:
-            print("{}: {}".format(key, self.cache_data[key]))
+            print(f"{key}: {self.cache_data[key]}")
