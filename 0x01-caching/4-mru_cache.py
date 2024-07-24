@@ -37,10 +37,5 @@ class MRUCache(BaseCaching):
         # Update the order to reflect that the key was recently used
         self.order.remove(key)
         self.order.append(key)
-        return self.cache_data[key]
 
-    def print_cache(self):
-        """ Print the current cache """
-        print("Current cache:")
-        for key in self.cache_data:
-            print(f"{key}: {self.cache_data[key]}")
+        return self.cache_data[key]
